@@ -1,0 +1,12 @@
+//importar eñl archivo dde configuracion de estilos 
+
+@import './base/settings';
+@import './base/base';
+@import './base/buttons';
+
+//estilos para los componentes 
+@import './components/auth';
+@import './components/links';
+@import './components/journal';
+@import './components/nothing';
+@import './components/notes';
