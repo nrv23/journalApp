@@ -1,6 +1,7 @@
 import { db } from '../firebase/firebaseConfig';
 import { loadNotes } from '../helpers/loadNotes';
 import { types } from '../types';
+import Swal from 'sweetalert2';
 
 export const starNewNote = () =>  {
 
@@ -49,3 +50,46 @@ export const setNotes = notes => ({
     type: types.NOTESLOAD,
     payload: notes
 })
+
+
+export const startSaveNote = (note) => {
+
+    return async (dispatch,getState) => {
+
+        const { auth:{uid} } = getState();
+
+        if(!note.url) {
+            delete note.url
+        }
+        const noteToFirestore = {...note}
+
+        delete noteToFirestore.id;
+
+        await db.doc(`${uid}/journal/notes/${note.id}`).update(noteToFirestore);
+        dispatch(refreshNote(note.id,noteToFirestore))
+
+        Swal.fire(
+            'Saved',
+            note.title,
+            'success'
+          )
+
+    }
+}
+
+export const refreshNote = (id,note) => {
+
+    return { 
+        type: types.NOTESUPDATED,
+        payload: {
+            id,
+            note:{
+                id,
+                ...note
+            }
+        }
+    }
+}
+
+//react-journal
+//	https://api.cloudinary.com/v1_1/dvzbb38tx/upload -> link para subir las imagenes

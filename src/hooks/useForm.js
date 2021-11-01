@@ -5,7 +5,7 @@ const useForm = (obj = {}) => {
     
     const [formValues, setFormValues] = useState(obj);
 
-    const reset = () => setFormValues(obj);
+    const reset = (newInitialState=obj) => setFormValues(newInitialState);
 
     const handleInputChange = ({target:{value,name}}) => {
 
