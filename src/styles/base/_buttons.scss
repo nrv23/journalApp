@@ -30,6 +30,15 @@
     }
 }
 
+.btn-danger {
+    background-color: red;
+    cursor: pointer;
+
+    &:hover {
+        background-color: darken($color: red, $amount: 10);
+    }
+}
+
 .btn-block  {
     width: 100%;
 }

@@ -2,6 +2,7 @@ import { db } from '../firebase/firebaseConfig';
 import { loadNotes } from '../helpers/loadNotes';
 import { types } from '../types';
 import Swal from 'sweetalert2';
+import { fileUpload } from '../helpers/fileUpload';
 
 export const starNewNote = () =>  {
 
@@ -19,7 +20,9 @@ export const starNewNote = () =>  {
             }
 
             const docRef = await db.collection(`${uid}/journal/notes`).add(newNote);
+            console.log(docRef)
             dispatch(activeNote(docRef.id,newNote));
+            dispatch(addNewNote(docRef.id,newNote));
         } catch (error) {
             console.log(error)
         }
@@ -33,6 +36,18 @@ export const activeNote = (id,note) => {
         payload: {
             ...note,
             id
+        }
+    }
+}
+
+export const addNewNote = (id,note) => {
+
+    return {
+
+        type: types.NOTESADDNEW,
+        payload:{
+            id,
+            ...note
         }
     }
 }
@@ -88,6 +103,61 @@ export const refreshNote = (id,note) => {
                 ...note
             }
         }
+    }
+}
+
+export const startUploadingFile = (file) => {
+
+    return async (dispatch,getState) => {
+
+        const {active} = getState().notes;
+        Swal.fire({
+            title: 'Uploading',
+            text: 'Please wait...',
+            didOpen: () => {
+              Swal.showLoading()
+            }
+           
+          })
+
+
+        const fileUrl = await fileUpload(file);
+
+       
+       
+        active.url = fileUrl;
+        
+        dispatch(startSaveNote(active))
+        
+        Swal.close();
+    }
+}
+
+export const startDeleteNote = id => {
+
+    return async (dispatch,getState) => {
+
+        const {uid} = getState().auth;
+
+        await db.doc(`${uid}/journal/notes/${id}`).delete();
+
+        dispatch(deleteNote(id));
+    }
+}
+
+export const deleteNote = (id) => {
+
+    return {
+        type: types.NOTEDELETE,
+        payload: id
+    }
+}
+
+export const clearNotes = () => {
+
+    return {
+
+        type: types.NOTESLOGOUTCLEANING
     }
 }
 

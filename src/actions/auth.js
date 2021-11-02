@@ -1,5 +1,6 @@
 import  { firebase,googleAuthProvider } from '../firebase/firebaseConfig';
 import { types } from '../types/index';
+import { clearNotes } from './notes';
 import { startLoading,finishLoading, setError,unSetError } from './ui';
 
 
@@ -72,6 +73,7 @@ export const startLogout = () => {
 
         await firebase.auth().signOut();
         dispatch(logout());
+        dispatch(clearNotes());
     }
 }
 
