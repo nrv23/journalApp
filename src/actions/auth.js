@@ -8,7 +8,7 @@ export const startLoginEmailPassword = (email, pass) => {
     
     return dispatch => { // retornar un callback para ejecutar un action asincrono
         dispatch(startLoading());
-        firebase.auth().signInWithEmailAndPassword(email,pass).then(({user:{uid,displayName}}) => {
+       return firebase.auth().signInWithEmailAndPassword(email,pass).then(({user:{uid,displayName}}) => {
             dispatch(login(uid,displayName))
             dispatch(finishLoading());
             dispatch(unSetError());

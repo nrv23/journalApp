@@ -1,6 +1,5 @@
 import { types } from "../types";
 
-
 const initialState = {
     notes: [],
     active: null // nota active o seleccionada
@@ -23,12 +22,6 @@ export const notesReducer = (state = initialState,action) => {
                 notes: action.payload
             }
         case types.NOTESUPDATED:
-            console.log(action.payload)
-            const v = state.notes.map(note => 
-                note.id === action.payload.id
-                ? action.payload.note
-                : note);
-
             return {
                 ...state,
                 active: state.notes.map(note => 
@@ -36,7 +29,6 @@ export const notesReducer = (state = initialState,action) => {
                     ? action.payload.note
                     : note
                 )[0],
-
                 notes: state.notes.map(note => 
                     note.id === action.payload.id
                     ? action.payload.note
@@ -47,10 +39,8 @@ export const notesReducer = (state = initialState,action) => {
             return {
                 ...state,
                 active: null,
-                notes: state.notes.filter(note => note.id !== action.payload)
-                    
+                notes: state.notes.filter(note => note.id !== action.payload)       
             }
-
         case types.NOTESLOGOUTCLEANING:
             return {
                 ...state,
@@ -61,8 +51,7 @@ export const notesReducer = (state = initialState,action) => {
             return {
                 ...state,
                 notes: [action.payload, ...state.notes]
-            }
-    
+            }   
         default:
             return state;
     }

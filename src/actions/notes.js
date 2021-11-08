@@ -20,7 +20,7 @@ export const starNewNote = () =>  {
             }
 
             const docRef = await db.collection(`${uid}/journal/notes`).add(newNote);
-            console.log(docRef)
+
             dispatch(activeNote(docRef.id,newNote));
             dispatch(addNewNote(docRef.id,newNote));
         } catch (error) {
@@ -110,6 +110,7 @@ export const startUploadingFile = (file) => {
 
     return async (dispatch,getState) => {
 
+       try {
         const {active} = getState().notes;
         Swal.fire({
             title: 'Uploading',
@@ -123,13 +124,16 @@ export const startUploadingFile = (file) => {
 
         const fileUrl = await fileUpload(file);
 
-       
+        console.log({fileUrl})
        
         active.url = fileUrl;
         
         dispatch(startSaveNote(active))
         
         Swal.close();
+       } catch (error) {
+           console.log(error);
+       }
     }
 }
 

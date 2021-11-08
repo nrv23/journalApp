@@ -60,12 +60,12 @@ export const RegisterScreen = () => {
 
                 {
 
-                    msgError && <div className="alert alert-danger">{msgError}</div>
+                    msgError && <div id="error" className="alert alert-danger">{msgError}</div>
                 }
 
 
                 <input 
-                    type="email" 
+                    type="text" 
                     name="email" 
                     id=""  
                     placeholder="Tu email" 
